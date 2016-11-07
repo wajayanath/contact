@@ -22,6 +22,7 @@ Route::group(['middleware' =>['web']], function () {
 
 	Route::get('contacts/{id}-from-{name}','ContactsController@show');
 	Route::resource('contacts', 'ContactsController'); // get
+	
 	Route::post('contacts/{id}/{name}/photos','ContactsController@addPhoto'); // add
 	Route::post('photo/{name}','PhotoController@deletePhoto'); //delete
 	//Route::resource('photo', 'PhotoController');
