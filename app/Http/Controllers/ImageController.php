@@ -15,17 +15,22 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
-use App\Models\Image;
-
+//use App\Models\Image;
+use Illuminate\Http\Request;
+use App\Contact;
+use App\Photo;
 
 class ImageController extends Controller
 {
 /////////////////////////
     protected $image;
+    private $upload_dir = 'public/uploads';
 
     public function __construct(ImageRepository $imageRepository)
     {
         $this->image = $imageRepository;
+        $this->middleware('auth');
+        $this->upload_dir = base_path() . '/'. $this->upload_dir;
     }
 
     //  public function getUpload()
@@ -33,55 +38,73 @@ class ImageController extends Controller
     //     return view('pages.upload');
     // }
 
-    public function postUpload()
+    public function postUpload($id, $name, Request $request)
     {
-        $photo = Input::all();
-        $response = $this->image->upload($photo);
-        return $response;
+        // $photo = Input::all();
+        // $response = $this->image->upload($photo);
+        // return $response;
+
+        $data = $request->all();
+        if($request->hasFile('file'))
+            {
+                $file = $request->file('file');
+                $name = time() . '_' . $file->getClientOriginalName();
+                $destination = $this->upload_dir;
+                $file->move($destination, $name);
+                $data['path'] = $name;
+
+            }
+       //$contact = Contact::where(compact('id', 'name'))->first();
+       $contact = Contact::findOrFail($id);
+       $contact->photos()->create(['path' => "{$name}"]);
+       return response()->json(['path'=> $data['path']]);
+       // $contact->photos()->create($data);
     }
 
-    public function deleteUpload()
+    public function deleteUpload($path, Request $request)
     {
 
-        $filename = Input::get('id');
+        // $filename = Input::get('id');
 
-        if(!$filename)
-        {
-            return 0;
-        }
+        // if(!$filename)
+        // {
+        //     return 0;
+        // }
 
-        $response = $this->image->delete( $filename );
+        // $response = $this->image->delete( $filename );
 
-        return $response;
+        // return $response;
+        $photo = Photo::where(compact('path'))->first();
+        $photo->delete();
     }
 
       /**
      * Part 2 - Display already uploaded images in Dropzone
      */
 
-    public function getServerImagesPage()
-    {
-        return view('pages.upload-2');
-    }
+    // public function getServerImagesPage()
+    // {
+    //     return view('pages.upload-2');
+    // }
 
-    public function getServerImages()
-    {
-        $images = Image::get(['original_name', 'filename']);
+    // public function getServerImages()
+    // {
+    //     $images = Image::get(['original_name', 'filename']);
 
-        $imageAnswer = [];
+    //     $imageAnswer = [];
 
-        foreach ($images as $image) {
-            $imageAnswer[] = [
-                'original' => $image->original_name,
-                'server' => $image->filename,
-                'size' => File::size(public_path('images/full_size/' . $image->filename))
-            ];
-        }
+    //     foreach ($images as $image) {
+    //         $imageAnswer[] = [
+    //             'original' => $image->original_name,
+    //             'server' => $image->filename,
+    //             'size' => File::size(public_path('images/full_size/' . $image->filename))
+    //         ];
+    //     }
 
-        return response()->json([
-            'images' => $imageAnswer
-        ]);
-    }
+    //     return response()->json([
+    //         'images' => $imageAnswer
+    //     ]);
+    // }
 
 ////////////////////////
     

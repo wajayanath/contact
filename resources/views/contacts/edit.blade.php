@@ -17,46 +17,45 @@
 	{{ csrf_field() }}
 </form> --}}
 
-
     
    <div class="row">
         <div class="col-md-offset-1 col-md-10">
             <div class="jumbotron how-to-create" >
-
-                {!! Form::open(['url' => route('upload-post'), 'class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
-
+               {{--  {!! Form::open(['route' => '/contacts'/{{ $contact->id }}/{{ $contact->name }}'/photos','method' => 'POST','class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
                 <div class="dz-message">
-
                 </div>
-
                 <div class="fallback">
                     <input name="file" type="file" multiple />
                 </div>
-
                 <div class="dropzone-previews" id="dropzonePreview"></div>
-
                 <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
-
-                {!! Form::close() !!}
+                {!! Form::close() !!} --}}
+                
+                <form id="real-dropzone" action="/contacts/{{ $contact->id }}/{{ $contact->name }}/photos" method="POST" class="dropzone">
+                 <div class="dz-message">
+                </div>
+                <div class="fallback">
+                    <input name="file" type="file" multiple />
+                </div>
+                <div class="dropzone-previews" id="dropzonePreview"></div>
+                <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
+                  {{ csrf_field() }}
+                </form>
 
             </div>
-            
         </div>
     </div>
 
     <!-- Dropzone Preview Template -->
     <div id="preview-template" style="display: none;">
-
         <div class="dz-preview dz-file-preview">
             <div class="dz-image"><img data-dz-thumbnail=""></div>
-
             <div class="dz-details">
                 <div class="dz-size"><span data-dz-size=""></span></div>
                 <div class="dz-filename"><span data-dz-name=""></span></div>
             </div>
             <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
             <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
-
             <div class="dz-success-mark">
                 <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
                     <!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch -->
@@ -92,6 +91,7 @@
 <script>
     
 var photo_counter = 0;
+var foo;
 Dropzone.options.realDropzone = {
 
     uploadMultiple: false,
@@ -123,25 +123,27 @@ Dropzone.options.realDropzone = {
             });
         });
 
+        this.on("success", function(file, response) { 
+          //console.log(response);
+              foo = response;
+              console.log(foo.path);
+        });
+
         this.on("removedfile", function(file) {
 
             $.ajax({
                 type: 'POST',
-                url: '/upload/delete',
-                data: {id: file.name, _token: $('#csrf-token').val()},
+                 url: "/photo/"+foo.path,
+                //data: {id: file.name, _token: $('#csrf-token').val()},
+                headers: {
+                  'X-CSRF-TOKEN': '{!! csrf_token() !!}'
+                },
                 dataType: 'html',
-                success: function(data){
-                    var rep = JSON.parse(data);
-                    if(rep.code == 200)
-                    {
-                        photo_counter--;
-                        $("#photoCounter").text( "(" + photo_counter + ")");
-                    }
-
-                }
+                
             });
 
         } );
+
     },
     error: function(file, response) {
         if($.type(response) === "string")
@@ -157,12 +159,12 @@ Dropzone.options.realDropzone = {
         }
         return _results;
     },
-    success: function(file,done) {
-        photo_counter++;
-        $("#photoCounter").text( "(" + photo_counter + ")");
-    }
+    // success: function(file,done) {
+    //     photo_counter++;
+    //     $("#photoCounter").text( "(" + photo_counter + ")");
+    // }
 }
-    
+
 </script>
 
 @endsection
