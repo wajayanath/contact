@@ -40,24 +40,26 @@ class ImageController extends Controller
 
     public function postUpload($id, $name, Request $request)
     {
-        // $photo = Input::all();
-        // $response = $this->image->upload($photo);
-        // return $response;
+        $photo = Input::all();
+        $response = $this->image->upload($id, $photo);
+        return $response;
 
-        $data = $request->all();
-        if($request->hasFile('file'))
-            {
-                $file = $request->file('file');
-                $name = time() . '_' . $file->getClientOriginalName();
-                $destination = $this->upload_dir;
-                $file->move($destination, $name);
-                $data['path'] = $name;
+        // $data = $request->all();
+        // if($request->hasFile('file'))
+        //     {
+        //         $file = $request->file('file');
+        //         $name = time() . '_' . $file->getClientOriginalName();
+        //         $destination = $this->upload_dir;
+        //         $file->move($destination, $name);
+        //       $data['path'] = $name;
 
-            }
+        //     }
        //$contact = Contact::where(compact('id', 'name'))->first();
-       $contact = Contact::findOrFail($id);
-       $contact->photos()->create(['path' => "{$name}"]);
-       return response()->json(['path'=> $data['path']]);
+       
+       // $contact = Contact::findOrFail($id);
+       // $contact->photos()->create(['path' => "{$name}"]);
+       // return response()->json(['path'=> $data['path']]);
+
        // $contact->photos()->create($data);
     }
 

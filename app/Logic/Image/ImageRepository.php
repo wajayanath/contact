@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use App\Models\Image;
+use App\Contact;
 
 
 class ImageRepository
 {
-    public function upload( $form_data )
+    public function upload($id, $form_data )
     {
 
        $validator = Validator::make($form_data, Image::$rules, Image::$messages);
@@ -51,9 +52,10 @@ class ImageRepository
         }
 
         $sessionImage = new Image;
-        $sessionImage->filename      = $allowed_filename;
-        $sessionImage->original_name = $originalName;
-        $sessionImage->save();
+        $contact = Contact::findOrFail($id);
+        $sessionImage->path  = $allowed_filename;
+        $contact->photos()->create(['path' => "{$sessionImage->path}"]);
+        //return response()->json(['path'=> $data['path']]);
 
         return Response::json([
             'error' => false,
