@@ -123,23 +123,37 @@ Dropzone.options.realDropzone = {
             });
         });
 
-        this.on("success", function(file, response) { 
+        //this.on("success", function(file, response) { 
           //console.log(response);
-              foo = response;
-              console.log(foo.path);
-        });
+              // foo = response;
+              // console.log(foo.path);
+        //});
 
         this.on("removedfile", function(file) {
 
-            $.ajax({
-                type: 'POST',
-                 url: "/photo/"+foo.path,
-                //data: {id: file.name, _token: $('#csrf-token').val()},
-                headers: {
-                  'X-CSRF-TOKEN': '{!! csrf_token() !!}'
-                },
-                dataType: 'html',
+            // $.ajax({
+            //     type: 'POST',
+            //      url: "/photo/"+foo.path,
+            //     //data: {id: file.name, _token: $('#csrf-token').val()},
+            //     headers: {
+            //       'X-CSRF-TOKEN': '{! csrf_token() !}'
+            //     },
+            //     dataType: 'html',
                 
+            // });
+             $.ajax({
+                type: 'POST',
+                url: '/upload/delete',
+                data: {id: file.name, _token: $('#csrf-token').val()},
+                dataType: 'html',
+                success: function(data){
+                    var rep = JSON.parse(data);
+                    if(rep.code == 200)
+                    {
+                        // photo_counter--;
+                        // $("#photoCounter").text( "(" + photo_counter + ")");
+                    }
+                }
             });
 
         } );
@@ -159,10 +173,10 @@ Dropzone.options.realDropzone = {
         }
         return _results;
     },
-    // success: function(file,done) {
-    //     photo_counter++;
-    //     $("#photoCounter").text( "(" + photo_counter + ")");
-    // }
+    success: function(file,done) {
+        //photo_counter++;
+        //$("#photoCounter").text( "(" + photo_counter + ")");
+    }
 }
 
 </script>

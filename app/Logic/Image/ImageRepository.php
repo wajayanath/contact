@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use App\Models\Image;
 use App\Contact;
-
+use App\Photo;
 
 class ImageRepository
 {
@@ -55,7 +55,7 @@ class ImageRepository
         $contact = Contact::findOrFail($id);
         $sessionImage->path  = $allowed_filename;
         $contact->photos()->create(['path' => "{$sessionImage->path}"]);
-        //return response()->json(['path'=> $data['path']]);
+        //return response()->json(['path' => "{$sessionImage->path}"]);
 
         return Response::json([
             'error' => false,
@@ -107,13 +107,13 @@ class ImageRepository
     /**
      * Delete Image From Session folder, based on original filename
      */
-    public function delete( $originalFilename)
+    public function delete($originalFilename)
     {
 
         $full_size_dir = Config::get('images.full_size');
         $icon_size_dir = Config::get('images.icon_size');
 
-        $sessionImage = Image::where('original_name', 'like', $originalFilename)->first();
+        $sessionImage = Photo::where('path', 'like', $originalFilename)->first();
 
 
         if(empty($sessionImage))
@@ -125,8 +125,8 @@ class ImageRepository
 
         }
 
-        $full_path1 = $full_size_dir . $sessionImage->filename;
-        $full_path2 = $icon_size_dir . $sessionImage->filename;
+        $full_path1 = $full_size_dir . $sessionImage->path;
+        $full_path2 = $icon_size_dir . $sessionImage->path;
 
         if ( File::exists( $full_path1 ) )
         {

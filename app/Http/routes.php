@@ -31,7 +31,7 @@ Route::group(['middleware' =>['web']], function () {
 // Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 
 	Route::post('contacts/{id}/{name}/photos', ['as' => 'upload-post', 'uses' =>'ImageController@postUpload']); //add
-	Route::post('photo/{name}', ['as' => 'upload-remove', 'uses' =>'ImageController@deleteUpload']); // delete
+	Route::post('upload/delete', ['as' => 'upload-remove', 'uses' =>'ImageController@deleteUpload']); // delete
 	// Route::get('example-2', ['as' => 'upload-2', 'uses' => 'ImageController@getServerImagesPage']);
 	// Route::get('server-images', ['as' => 'server-images', 'uses' => 'ImageController@getServerImages']);
 

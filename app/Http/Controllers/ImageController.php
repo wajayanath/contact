@@ -63,21 +63,21 @@ class ImageController extends Controller
        // $contact->photos()->create($data);
     }
 
-    public function deleteUpload($path, Request $request)
+    public function deleteUpload()
     {
 
-        // $filename = Input::get('id');
+        $filename = Input::get('id');
 
-        // if(!$filename)
-        // {
-        //     return 0;
-        // }
+        if(!$filename)
+        {
+            return 0;
+        }
 
-        // $response = $this->image->delete( $filename );
+        $response = $this->image->delete( $filename );
 
-        // return $response;
-        $photo = Photo::where(compact('path'))->first();
-        $photo->delete();
+        return $response;
+        //$photo = Photo::where(compact('path'))->first();
+        //$photo->delete();
     }
 
       /**
