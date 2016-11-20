@@ -114,12 +114,12 @@ Dropzone.options.realDropzone = {
 
             $.each(data.images, function (key, value) {
 
-                var file = {name: value.original, size: value.size};
+                var file = {name: value.server, size: value.size};
                 myDropzone.options.addedfile.call(myDropzone, file);
-                myDropzone.options.thumbnail.call(myDropzone, file, 'images/icon_size/' + value.server);
+                myDropzone.options.thumbnail.call(myDropzone, file, '/images/icon_size/' + value.server);
                 myDropzone.emit("complete", file);
-                photo_counter++;
-                $("#photoCounter").text( "(" + photo_counter + ")");
+                // photo_counter++;
+                //$("#photoCounter").text( "(" + photo_counter + ")");
             });
         });
 

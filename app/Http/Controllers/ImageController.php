@@ -30,7 +30,7 @@ class ImageController extends Controller
     {
         $this->image = $imageRepository;
         $this->middleware('auth');
-        $this->upload_dir = base_path() . '/'. $this->upload_dir;
+        //$this->upload_dir = base_path() . '/'. $this->upload_dir;
     }
 
     //  public function getUpload()
@@ -89,24 +89,24 @@ class ImageController extends Controller
     //     return view('pages.upload-2');
     // }
 
-    // public function getServerImages()
-    // {
-    //     $images = Image::get(['original_name', 'filename']);
+    public function getServerImages()
+    {
+        $images = Photo::get(['path']);
 
-    //     $imageAnswer = [];
+        $imageAnswer = [];
 
-    //     foreach ($images as $image) {
-    //         $imageAnswer[] = [
-    //             'original' => $image->original_name,
-    //             'server' => $image->filename,
-    //             'size' => File::size(public_path('images/full_size/' . $image->filename))
-    //         ];
-    //     }
+        foreach ($images as $image) {
+            $imageAnswer[] = [
+                //'original' => $image->original_name,
+                'server' => $image->path,
+                'size' => File::size(public_path('images/full_size/' . $image->path))
+            ];
+        }
 
-    //     return response()->json([
-    //         'images' => $imageAnswer
-    //     ]);
-    // }
+        return response()->json([
+            'images' => $imageAnswer
+        ]);
+    }
 
 ////////////////////////
     
