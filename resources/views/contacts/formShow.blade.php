@@ -72,7 +72,7 @@
             <div>
             <ul class="bxslider">
                 @foreach ($contact->photos as $photo)
-                  <li><img src="../../uploads/{{ $photo->path }}" alt=""></li>
+                  <li><img src="../../images/full_size/{{ $photo->path }}" alt=""></li>
                 @endforeach
             </ul> 
           </div>
