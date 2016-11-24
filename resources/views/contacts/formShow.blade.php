@@ -75,6 +75,11 @@
                   <li><img src="../../images/full_size/{{ $photo->path }}" alt=""></li>
                 @endforeach
             </ul> 
+            <ul id="bx-pager">
+                @foreach ($contact->photos as $index => $photo)
+                  <a data-slide-index="{{ $index }}" href=""><img src="../../images/icon_size/{{ $photo->path }}" /></a>
+                @endforeach
+            </ul> 
           </div>
         </div>
       </div>
