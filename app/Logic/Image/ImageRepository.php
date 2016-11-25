@@ -85,8 +85,10 @@ class ImageRepository
     public function original( $photo, $filename )
     {
         $manager = new ImageManager();
-        $image = $manager->make( $photo )->save(Config::get('images.full_size') . $filename );
-
+        $image = $manager->make( $photo )
+                ->insert('preview.png', 'center')
+                //->fit(800,650)
+                ->save(Config::get('images.full_size') . $filename );
         return $image;
     }
 
