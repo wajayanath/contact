@@ -69,4 +69,87 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return User
+     */
+    protected function login(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (auth()->attempt(array('email' => $request->input('email'), 'password' => $request->input('password'))))
+        {
+            if(auth()->user()->is_activated == '0'){
+                $this->logout();
+                return back()->with('warning',"First please active your account.");
+            }
+            return redirect()->to('home');
+        }else{
+            return back()->with('error','your username and password are wrong.');
+        }
+    }
+
+    /**
+     * Register new user
+     *
+     * @param  array  $data
+     * @return User
+     */
+    public function register(Request $request)
+    {
+        $input = $request->all();
+        $validator = $this->validator($input);
+
+        if ($validator->passes()) {
+            $user = $this->create($input)->toArray();
+            $user['link'] = str_random(30);
+
+            DB::table('user_activations')->insert(['id_user'=>$user['id'],'token'=>$user['link']]);
+
+            Mail::send('emails.activation', $user, function($message) use ($user) {
+                $message->to($user['email']);
+                $message->subject('Site - Activation Code');
+            });
+
+            return redirect()->to('login')
+                ->with('success',"We sent activation code. Please check your mail.");
+        }
+
+        return back()->with('errors',$validator->errors());
+    }
+
+     /**
+     * Check for user Activation Code
+     *
+     * @param  array  $data
+     * @return User
+     */
+    public function userActivation($token)
+    {
+        $check = DB::table('user_activations')->where('token',$token)->first();
+
+        if(!is_null($check)){
+            $user = User::find($check->id_user);
+
+            if($user->is_activated == 1){
+                return redirect()->to('login')
+                    ->with('success',"user are already actived.");                
+            }
+
+            $user->update(['is_activated' => 1]);
+            DB::table('user_activations')->where('token',$token)->delete();
+
+            return redirect()->to('login')
+                ->with('success',"user active successfully.");
+        }
+
+        return redirect()->to('login')
+                ->with('warning',"your token is invalid.");
+    }
 }

@@ -26,16 +26,16 @@ Route::group(['middleware' =>['web']], function () {
 //	Route::post('contacts/{id}/{name}/photos','ContactsController@addPhoto'); // add
 	// Route::post('photo/{name}','PhotoController@deletePhoto'); //delete
 	//Route::resource('photo', 'PhotoController');
-
 // Route::get('resizeImage', 'ImageController@resizeImage');
 // Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 
 	Route::post('contacts/{id}/{name}/photos', ['as' => 'upload-post', 'uses' =>'ImageController@postUpload']); //add
 	Route::post('upload/delete', ['as' => 'upload-remove', 'uses' =>'ImageController@deleteUpload']); // delete
-	 //Route::get('example-2', ['as' => 'upload-2', 'uses' => 'ImageController@getServerImagesPage']);
-	 Route::get('server-images', ['as' => 'server-images', 'uses' => 'ImageController@getServerImages']);
+	//Route::get('example-2', ['as' => 'upload-2', 'uses' => 'ImageController@getServerImagesPage']);
+	Route::get('server-images', ['as' => 'server-images', 'uses' => 'ImageController@getServerImages']);
 
 });
 Route::auth();
 
- // Route::get('/home', 'HomeController@index');
+Route::get('user/activation/{token}', 'Auth\AuthController@userActivation');
+// Route::get('/home', 'HomeController@index');
