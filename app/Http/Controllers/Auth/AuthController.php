@@ -92,7 +92,7 @@ class AuthController extends Controller
                 $this->logout();
                 return back()->with('warning',"First please active your account.");
             }
-            return redirect()->to('home');
+            return redirect()->to('/contacts');
         }else{
             return back()->with('error','your username and password are wrong.');
         }
