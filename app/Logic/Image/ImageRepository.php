@@ -35,7 +35,7 @@ class ImageRepository
         $originalNameWithoutExt = substr($originalName, 0, strlen($originalName) - strlen($extension) - 1);
 
         $filename = $this->sanitize($originalNameWithoutExt);
-        $allowed_filename = $this->createUniqueFilename( $filename, $extension );
+        $allowed_filename = $this->createUniqueFilename( $id, $filename, $extension );
 
         $uploadSuccess1 = $this->original( $photo, $allowed_filename );
 
@@ -64,7 +64,7 @@ class ImageRepository
 
     }
 
-    public function createUniqueFilename( $filename, $extension )
+    public function createUniqueFilename( $id, $filename, $extension )
     {
         $full_size_dir = Config::get('images.full_size');
         $full_image_path = $full_size_dir . $filename . '.' . $extension;
@@ -76,7 +76,8 @@ class ImageRepository
             return $filename . '-' . $imageToken . '.' . $extension;
         }
 
-        return $filename . '.' . $extension;
+        $contact = Contact::findOrFail($id);
+        return $contact->id .'-'. $filename . '.' . $extension;
     }
 
     /**
