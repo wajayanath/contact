@@ -102,7 +102,7 @@
 //        sampleTags = data;
 //     }
 // });
-var url = window.location.href;
+var url = window.location.href.split('/');
 
 Dropzone.options.realDropzone = {
 
@@ -120,16 +120,20 @@ Dropzone.options.realDropzone = {
     init:function() {
         // Add server images
         var myDropzone = this;   
+        
         $.get('/server-images', function(data) {
+            //console.log(JSON.stringify(data));
+            //var image = data.images[0].server.split('-');
             $.each(data.images, function (key, value) {
-                var image = value.server;
-                if (url.substr(-7,2) == image.substring(0, 2)) {
+             var image = value.server.split('-');
+             if (url[4] == image[0]) {
                     var file = {name: value.server, size: value.size};
                     myDropzone.emit("addedfile", file);
                     myDropzone.emit("thumbnail", file, '/images/icon_size/' + value.server);
                     myDropzone.emit("complete", file);
-                }
+              }
             });
+
         });
 
         this.on("maxfilesexceeded", function(file) { 
