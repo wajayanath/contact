@@ -102,8 +102,8 @@
 //        sampleTags = data;
 //     }
 // });
-var url = window.location.href.split('/');
-
+var url = window.location.pathname.split('/');
+var ur1 = '/server-images/' + url[2];
 Dropzone.options.realDropzone = {
 
     uploadMultiple: false,
@@ -120,20 +120,13 @@ Dropzone.options.realDropzone = {
     init:function() {
         // Add server images
         var myDropzone = this;   
-        
-        $.get('/server-images', function(data) {
-            //console.log(JSON.stringify(data));
-            //var image = data.images[0].server.split('-');
+        $.get(ur1, function(data) {
             $.each(data.images, function (key, value) {
-             var image = value.server.split('-');
-             if (url[4] == image[0]) {
                     var file = {name: value.server, size: value.size};
                     myDropzone.emit("addedfile", file);
                     myDropzone.emit("thumbnail", file, '/images/icon_size/' + value.server);
                     myDropzone.emit("complete", file);
-              }
             });
-
         });
 
         this.on("maxfilesexceeded", function(file) { 

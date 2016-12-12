@@ -32,7 +32,20 @@ Route::group(['middleware' =>['web']], function () {
 	Route::post('contacts/{id}/{name}/photos', ['as' => 'upload-post', 'uses' =>'ImageController@postUpload']); //add
 	Route::post('upload/delete', ['as' => 'upload-remove', 'uses' =>'ImageController@deleteUpload']); // delete
 	//Route::get('example-2', ['as' => 'upload-2', 'uses' => 'ImageController@getServerImagesPage']);
-	Route::get('server-images', ['as' => 'server-images', 'uses' => 'ImageController@getServerImages']);
+	Route::get('server-images/{id}', function (App\Contact $id) {
+		$images = App\Photo::where('contact_id', 'like', $id['id'] )->get();
+		$imageAnswer = [];
+        foreach ($images as $image) {
+            $imageAnswer[] = [
+                'server' => $image->path,
+                'size' => File::size(public_path('images/full_size/' . $image->path))
+            ];
+        }
+        return response()->json([
+            'images' => $imageAnswer
+        ]);
+	});
+
 	Route::get('user/activation/{token}', 'Auth\AuthController@userActivation');
 
 });
