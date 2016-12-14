@@ -6,20 +6,11 @@
   <div class="panel-heading">
     <strong>Edit Contact</strong>
   </div>
-  {!! Form::model($contact, ['files' => true, 'method' => 'PATCH', 'route' => ['contacts.update', $contact->id]]) !!}
-    @include('contacts.form')
-  {!! Form::close() !!}
-
-</div>
-
-
 {{-- <form id="addPhotoForm" action="/contacts/{{ $contact->id }}/{{ $contact->name }}/photos" method="POST" class="dropzone">
 	{{ csrf_field() }}
 </form> --}}
-
-    
    <div class="row">
-        <div class="col-md-offset-1 col-md-10">
+        <div class="col-md-12">
             <div class="jumbotron how-to-create" >
                {{--  {!! Form::open(['route' => '/contacts'/{{ $contact->id }}/{{ $contact->name }}'/photos','method' => 'POST','class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
                 <div class="dz-message">
@@ -41,7 +32,6 @@
                 <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
                   {{ csrf_field() }}
                 </form>
-
             </div>
         </div>
     </div>
@@ -81,12 +71,16 @@
                     </g>
                 </svg>
             </div>
-
         </div>
     </div>
     <!-- End Dropzone Preview Template -->
   
   {!! Form::hidden('csrf-token', csrf_token(), ['id' => 'csrf-token']) !!}
+    
+  {!! Form::model($contact, ['files' => true, 'method' => 'PATCH', 'route' => ['contacts.update', $contact->id]]) !!}
+    @include('contacts.form')
+  {!! Form::close() !!}
+</div>
 
 <script>
     
