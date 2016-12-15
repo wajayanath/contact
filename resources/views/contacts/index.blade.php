@@ -25,7 +25,10 @@
 	                    <div class="media-left">
 	                      <a href="#">
 	                      <?php $photo = !is_null($contact->photo) ? $contact->photo : 'default.jpg' ?>
- 							{!! Html::image('uploads/'. $photo, $contact->name, ['class'=> 'media-object', 'width' => 100, 'height' => 100 ]) !!}
+	                      <?php 
+	                      $image = App\Photo::where('contact_id', 'like', $contact->id)->first();
+	                       ?>
+ 							{!! Html::image('images/icon_size/'. $image['path'], $contact->name, ['class'=> 'media-object', 'width' => 100, 'height' => 100 ]) !!}
 	                      </a>
 	                    </div>
 	                    <div class="media-body">
