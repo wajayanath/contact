@@ -98,6 +98,7 @@
 // });
 var url = window.location.pathname.split('/');
 var ur1 = '/server-images/' + url[2];
+//var photo_counter;
 Dropzone.options.realDropzone = {
 
     uploadMultiple: false,
@@ -113,18 +114,20 @@ Dropzone.options.realDropzone = {
     // The setting up of the dropzone
     init:function() {
         // Add server images
-        var myDropzone = this;   
+        var myDropzone = this;
+        var existingFileCount = 1;
         $.get(ur1, function(data) {
             $.each(data.images, function (key, value) {
                     var file = {name: value.server, size: value.size};
                     myDropzone.emit("addedfile", file);
                     myDropzone.emit("thumbnail", file, '/images/icon_size/' + value.server);
                     myDropzone.emit("complete", file);
+                    myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
             });
         });
 
         this.on("maxfilesexceeded", function(file) { 
-          myDropzone.removeFile(file);
+         myDropzone.removeFile(file);
         });
 
         // this.on("success", function(file, response) { 
@@ -176,9 +179,9 @@ Dropzone.options.realDropzone = {
         return _results;
     },
    // success: function(file,done) {
-        //photo_counter++;
-        //$("#photoCounter").text( "(" + photo_counter + ")");
-    //}
+   //      photo_counter++;
+   //      $("#photoCounter").text( "(" + photo_counter + ")");
+   //  }
     // maxfilesexceeded: function(file) { 
     //     this.removeFile(file); 
     // }
