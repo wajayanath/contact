@@ -83,12 +83,6 @@
 </div>
 
 <script>
-    
-//var photo_counter = 0;
-//var foo;
-
-// var sampleTags;
-
 // $.ajax({
 //     url: 'values.php'
 //     }).done(function(data) {
@@ -98,7 +92,7 @@
 // });
 var url = window.location.pathname.split('/');
 var ur1 = '/server-images/' + url[2];
-//var photo_counter;
+var pcount = 0;
 Dropzone.options.realDropzone = {
 
     uploadMultiple: false,
@@ -115,26 +109,25 @@ Dropzone.options.realDropzone = {
     init:function() {
         // Add server images
         var myDropzone = this;
-        var existingFileCount = 1;
         $.get(ur1, function(data) {
+            var pcount = data.images.length;
+            //console.log(pcount);
             $.each(data.images, function (key, value) {
                     var file = {name: value.server, size: value.size};
                     myDropzone.emit("addedfile", file);
                     myDropzone.emit("thumbnail", file, '/images/icon_size/' + value.server);
                     myDropzone.emit("complete", file);
-                    myDropzone.options.maxFiles = myDropzone.options.maxFiles - existingFileCount;
             });
+            myDropzone.options.maxFiles = myDropzone.options.maxFiles - pcount;
         });
 
         this.on("maxfilesexceeded", function(file) { 
-         myDropzone.removeFile(file);
+            myDropzone.removeFile(file);
         });
 
-        // this.on("success", function(file, response) { 
-        //   console.log(response);
-        //   foo = response;
-        //   console.log(foo.path);
-        // });
+         // this.on("success", function(file, response) { 
+         //  //  photo_counter++;
+         // });
 
         this.on("removedfile", function(file) {
             // $.ajax({
@@ -151,7 +144,7 @@ Dropzone.options.realDropzone = {
                 url: '/upload/delete',
                 data: {id: file.name, _token: $('#csrf-token').val()},
                 dataType: 'html',
-                success: function(data){
+                success: function(data) {
                     var rep = JSON.parse(data);
                     if(rep.code == 200)
                     {
@@ -160,9 +153,7 @@ Dropzone.options.realDropzone = {
                     }
                 }
             });
-
-        } );
-
+        });
     },
     error: function(file, response) {
         if($.type(response) === "string")
@@ -180,7 +171,7 @@ Dropzone.options.realDropzone = {
     },
    // success: function(file,done) {
    //      photo_counter++;
-   //      $("#photoCounter").text( "(" + photo_counter + ")");
+   //      // $("#photoCounter").text( "(" + photo_counter + ")");
    //  }
     // maxfilesexceeded: function(file) { 
     //     this.removeFile(file); 
