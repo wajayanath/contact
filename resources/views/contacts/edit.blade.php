@@ -6,22 +6,9 @@
   <div class="panel-heading">
     <strong>Edit Contact</strong>
   </div>
-{{-- <form id="addPhotoForm" action="/contacts/{{ $contact->id }}/{{ $contact->name }}/photos" method="POST" class="dropzone">
-	{{ csrf_field() }}
-</form> --}}
    <div class="row">
         <div class="col-md-12">
-            <div class="jumbotron how-to-create" >
-               {{--  {!! Form::open(['route' => '/contacts'/{{ $contact->id }}/{{ $contact->name }}'/photos','method' => 'POST','class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
-                <div class="dz-message">
-                </div>
-                <div class="fallback">
-                    <input name="file" type="file" multiple />
-                </div>
-                <div class="dropzone-previews" id="dropzonePreview"></div>
-                <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
-                {!! Form::close() !!} --}}
-                
+            <div>
                 <form id="real-dropzone" action="/contacts/{{ $contact->id }}/{{ $contact->name }}/photos" method="POST" class="dropzone">
                  <div class="dz-message">
                 </div>
@@ -111,14 +98,13 @@ Dropzone.options.realDropzone = {
         var myDropzone = this;
         $.get(ur1, function(data) {
             var pcount = data.images.length;
-            //console.log(pcount);
+            myDropzone.options.maxFiles = myDropzone.options.maxFiles - pcount;
             $.each(data.images, function (key, value) {
                     var file = {name: value.server, size: value.size};
                     myDropzone.emit("addedfile", file);
                     myDropzone.emit("thumbnail", file, '/images/icon_size/' + value.server);
                     myDropzone.emit("complete", file);
             });
-            myDropzone.options.maxFiles = myDropzone.options.maxFiles - pcount;
         });
 
         this.on("maxfilesexceeded", function(file) { 
@@ -156,13 +142,13 @@ Dropzone.options.realDropzone = {
         });
     },
     error: function(file, response) {
-        if($.type(response) === "string")
+        if ($.type(response) === "string")
             var message = response; //dropzone sends it's own error messages in string
         else
             var message = response.message;
-        file.previewElement.classList.add("dz-error");
-        _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
-        _results = [];
+            file.previewElement.classList.add("dz-error");
+            _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+            _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             node = _ref[_i];
             _results.push(node.textContent = message);
@@ -173,9 +159,9 @@ Dropzone.options.realDropzone = {
    //      photo_counter++;
    //      // $("#photoCounter").text( "(" + photo_counter + ")");
    //  }
-    // maxfilesexceeded: function(file) { 
-    //     this.removeFile(file); 
-    // }
+   // maxfilesexceeded: function(file) { 
+   //     this.removeFile(file); 
+   // }
 }
 
 </script>

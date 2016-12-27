@@ -2,7 +2,7 @@
   <div class="panel-body">
     <div class="form-horizontal">
       <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
                 @if(count($errors))
                   <div class="alert alert-danger">
                     <ul>
@@ -63,9 +63,6 @@
             {!! Form::select("group_id", $groups, null, ['class' => 'form-control']) !!}
 
             </div>
-            <div class="col-md-3">
-              <a href="#" id="add-group-btn" class="btn btn-default btn-block">Add Group</a>
-            </div>
           </div>
           <div class="form-group" id="add-new-group" style="display: none;">
             <div class="col-md-offset-3 col-md-8">
@@ -77,18 +74,6 @@
                   </a>
                 </span>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="fileinput fileinput-new" data-provides="fileinput">
-            <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
-             <img class="media-object" src="http://placehold.it/100x100" alt="...">
-            </div>
-            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
-            <div class="text-center">
-              <span class="btn btn-default btn-file"><span class="fileinput-new">Choose Photo</span><span class="fileinput-exists">Change</span>{!! Form::file('photo') !!}</span>
-              <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
             </div>
           </div>
         </div>
