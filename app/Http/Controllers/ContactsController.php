@@ -90,8 +90,10 @@ class ContactsController extends Controller
     {
         $this->validate($request, $this->rules);
         $data = $this->get_request($request);
-        $request->user()->contacts()->create($data);
-        return redirect("contacts")->with("message", "contact save");
+        //$request->user()->contacts()->create($data);
+        //return redirect("contacts")->with("message", "contact save");
+        $obj = $request->user()->contacts()->create($data);
+        return redirect()->action('ContactsController@edit', ['id' => $obj->id]);
     }
 
     public function update($id, Request $request)
