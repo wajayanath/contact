@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Logic\Image\ImageRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Contact;
@@ -20,8 +21,9 @@ class ContactsController extends Controller
 
     private $upload_dir = 'public/uploads';
 
-    public function __construct()
+    public function __construct(ImageRepository $imageRepository)
     {
+        $this->image = $imageRepository;
         $this->middleware('auth');
         $this->upload_dir = base_path() . '/'. $this->upload_dir;
     }
@@ -53,6 +55,7 @@ class ContactsController extends Controller
     		'contacts' => $contacts
     	]);
     }
+
     public function getGroups()
     {
         $groups = [];
@@ -130,7 +133,6 @@ class ContactsController extends Controller
         return $data;
     }
 
-
     public function addPhoto($id, $name, Request $request)
     {
         $data = $request->all();
@@ -160,9 +162,13 @@ class ContactsController extends Controller
         //         $file_path = $this->upload_dir . '/' . $contact->photo;
         //         if(file_exists($file_path)) unlink ($file_path);
         //     }
-         $contact->delete();
-         $this->removePhoto($contact->photo);
-         return redirect("contacts")->with("message", "contact deleted");
+        $imgs = Photo::where('contact_id', 'like', $contact->id)->get();
+        foreach ($imgs as $img) {
+           $this->image->delete($img->path);
+        }
+        $contact->delete();
+        // $this->removePhoto($contact->photo);
+        return redirect("contacts")->with("message", "contact deleted");
     }
 
     private function removePhoto($photo) {
