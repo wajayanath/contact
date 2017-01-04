@@ -24,18 +24,18 @@
 	                  <div class="media">
 	                    <div class="media-left">
 	                      <a href="#">
-	                      <?php $photo = !is_null($contact->photo) ? $contact->photo : 'default.jpg' ?>
 	                      <?php 
-	                      $image = App\Photo::where('contact_id', 'like', $contact->id)->first();
+	                      	$image = App\Photo::where('contact_id', 'like', $contact->id)->first();
+	                      	$img = !is_null($image['path']) ? $image['path'] : 'default.jpg'; 
 	                       ?>
- 							{!! Html::image('images/icon_size/'. $image['path'], $contact->name, ['class'=> 'media-object', 'width' => 100, 'height' => 100 ]) !!}
+ 							{!! Html::image('images/icon_size/'. $img, $contact->name, ['class'=> 'media-object', 'width' => 100, 'height' => 100 ]) !!}
 	                      </a>
 	                    </div>
 	                    <div class="media-body">
 	                    <?php 
 			                     $temp = $contact->name;	
 			                     $temp2 = str_replace(' ','-', $temp);
-	                      ?>
+	                    ?>
 						@if (! Auth::guest())
 	                      <h4 class="media-heading"><a href="contacts/{{ $contact->id."-from-".$temp2 }}">{{ $contact->name }}</a></h4>
 	                    @else
