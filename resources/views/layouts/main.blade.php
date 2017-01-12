@@ -11,7 +11,7 @@
           <?php $selected_group = Request::get("group_id");
                 $listGroups = listGroups(Auth::user()->id);
            ?>
-            <a href="{{ route('contacts.index') }}" class="list-group-item {{ empty($selected_group) ? 'active' : '' }}">All Contact<span class="badge">{{ collect($listGroups)->sum('total') }}</span>
+            <a href="{{ route('contacts.index') }}" class="list-group-item {{ empty($selected_group) ? 'active' : '' }}">All Ads<span class="badge">{{ collect($listGroups)->sum('total') }}</span>
             </a>
             @foreach ($listGroups as $group)
               <a href="{{ route('contacts.index', ['group_id' => $group->id ]) }}" class="list-group-item {{ $selected_group == $group->id ? 'active' : '' }}">{{ $group->name }}<span class="badge">{{ $group->total }}</span></a>
@@ -22,7 +22,7 @@
            <?php $selected_group = Request::get("group_id");
                 $listGroups = App\Group::all();
            ?> 
-            <a href="{{ route('all.index') }}" class="list-group-item {{ empty($selected_group) ? 'active' : '' }}">All Contact<span class="badge">{{ App\Contact::count() }}</span>
+            <a href="{{ route('all.index') }}" class="list-group-item {{ empty($selected_group) ? 'active' : '' }}">All Ads<span class="badge">{{ App\Contact::count() }}</span>
             </a>
             
             @foreach (App\Group::all() as $group)

@@ -5,13 +5,13 @@
 	<div class="panel panel-default">
 		<div class="pannel-heading clearfix">
 			<div class="pull-left col-md-10">
-				<h4>All Contacts</h4>
+				<h4>All Ads</h4>
 			</div>
 		@if (! Auth::guest())	
 			<div class="pull-right col-md-2">
 				<a href="{{ route('contacts.create') }}" class="btn btn-success">
 	              <i class="glyphicon glyphicon-plus"></i> 
-	              Add Contact
+	              Post Your Ad
 	            </a>
 			</div>
 		@endif

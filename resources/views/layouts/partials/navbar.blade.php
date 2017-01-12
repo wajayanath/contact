@@ -9,16 +9,16 @@
           </button>
 
           <a class="navbar-brand text-uppercase" href="#">            
-            My contact
+            JK
           </a>
         </div>
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav">
                @if (Auth::guest())
-                    <li class="{{ Request::segment(1) == "contacts" ? "active" : "" }}"><a href="{{ route('all.index') }}">All Contacts</a></li>
+                    <li class="{{ Request::segment(1) == "contacts" ? "active" : "" }}"><a href="{{ route('all.index') }}">All Ads</a></li>
                @else
-                    <li class="{{ Request::segment(1) == "contacts" ? "active" : "" }}"><a href="{{ route('contacts.index') }}">My Contacts</a></li>
+                    <li class="{{ Request::segment(1) == "contacts" ? "active" : "" }}"><a href="{{ route('contacts.index') }}">My Ads</a></li>
                @endif     
                 </ul>
 

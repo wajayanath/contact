@@ -4,7 +4,7 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <strong>Show Contact</strong>
+    <strong>Show Ad</strong>
   </div>
   
   @include('contacts.formShow')

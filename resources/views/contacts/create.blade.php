@@ -4,7 +4,7 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <strong>Add Contact</strong>
+    <strong>Post Your Add</strong>
   </div>
 
   {!! Form::open(['files' => true, 'route' => 'contacts.store']) !!}
